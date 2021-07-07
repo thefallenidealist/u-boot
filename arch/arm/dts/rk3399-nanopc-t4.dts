@@ -94,11 +94,6 @@
 	};
 };
 
-&pcie0 {
-	num-lanes = <4>;
-	vpcie3v3-supply = <&vcc3v3_sys>;
-};
-
 &pinctrl {
 	ir {
 		ir_rx: ir-rx {
@@ -133,4 +128,33 @@
 	enable-active-high;
 	gpios = <&gpio4 RK_PD2 GPIO_ACTIVE_HIGH>;
 	vin-supply = <&vcc5v0_sys>;
+};
+
+&pcie0 {
+	num-lanes = <4>;
+	vpcie3v3-supply = <&vcc3v3_sys>;
+	// RockPro64 - GPIO1_D0 enables 12V for PCIe slot & enables power IC for 3V3 PCIe
+	// Som-RK3399v2: M.2/PCIe 3V3 always enabled (hard-coded)
+
+	/* ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;	// RockPro64 - PCIE_PERST_L */
+	ep-gpios = <&gpio2 RK_PA4 GPIO_ACTIVE_HIGH>;	// SoM sch: GPIO2_A4 - M.2 PERST#
+	pinctrl-names = "default";
+	pinctrl-0 = <&pcie_perst>;
+	status = "okay";
+};
+
+&pcie_phy {
+	/delete-property/ assigned-clock-parents;
+	/delete-property/ assigned-clock-rates;
+	/delete-property/ assigned-clocks;
+	status = "okay";
+};
+
+&pinctrl {
+	pcie {
+		pcie_perst: pcie-perst {
+			// sch: GPIO2_A4_PCIE_RESET# - M.2 PERST#
+			rockchip,pins = <2 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
 };

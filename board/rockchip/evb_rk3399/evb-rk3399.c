@@ -9,6 +9,7 @@
 #include <log.h>
 #include <asm/arch-rockchip/periph.h>
 #include <power/regulator.h>
+#include <led.h>
 
 #ifndef CONFIG_SPL_BUILD
 int board_early_init_f(void)
@@ -25,6 +26,9 @@ int board_early_init_f(void)
 	ret = regulator_set_enable(regulator, true);
 	if (ret)
 		debug("%s vcc5v0-host-en set fail! ret %d\n", __func__, ret);
+
+	if (IS_ENABLED(CONFIG_LED))
+		led_default_state();
 
 out:
 	return 0;

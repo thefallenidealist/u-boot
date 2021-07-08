@@ -12,8 +12,8 @@
 #include "rk3399-nanopi4.dtsi"
 
 / {
-	model = "FriendlyElec NanoPC-T4";
-	compatible = "friendlyarm,nanopc-t4", "rockchip,rk3399";
+	model = "FriendlyElec SoM-RK3399v2 SPI PCI";
+	compatible = "friendlyarm,som-rk3399v2", "friendlyarm,nanopc-t4", "rockchip,rk3399";
 
 	vcc12v0_sys: vcc12v0-sys {
 		compatible = "regulator-fixed";

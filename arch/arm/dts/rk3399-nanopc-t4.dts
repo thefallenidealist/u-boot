@@ -64,6 +64,26 @@
 		fan-supply = <&vcc12v0_sys>;
 		pwms = <&pwm1 0 50000 0>;
 	};
+
+	leds {
+		compatible = "gpio-leds";
+		pinctrl-names = "default";
+		pinctrl-0 = <&leds_pins>;
+
+		orange {
+			u-boot,dm-pre-reloc;
+			label = "orange";
+			gpios = <&gpio1 RK_PD0 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		green {
+			u-boot,dm-pre-reloc;
+			label = "green";
+			gpios = <&gpio1 RK_PC7 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
 };
 
 &cpu_thermal {
@@ -156,5 +176,11 @@
 			// sch: GPIO2_A4_PCIE_RESET# - M.2 PERST#
 			rockchip,pins = <2 RK_PA4 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
+	};
+
+	leds_pins: led_pins {
+			rockchip,pins =
+				<RK_GPIO1 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>,
+				<RK_GPIO1 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
 	};
 };

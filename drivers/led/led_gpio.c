@@ -12,6 +12,7 @@
 #include <malloc.h>
 #include <asm/gpio.h>
 #include <dm/lists.h>
+#include <dm/uclass-internal.h>
 
 struct led_gpio_priv {
 	struct gpio_desc gpio;
@@ -59,6 +60,7 @@ static int led_gpio_probe(struct udevice *dev)
 {
 	struct led_uc_plat *uc_plat = dev_get_uclass_plat(dev);
 	struct led_gpio_priv *priv = dev_get_priv(dev);
+	const char *default_state;
 	int ret;
 
 	/* Ignore the top-level LED node */
@@ -68,6 +70,14 @@ static int led_gpio_probe(struct udevice *dev)
 	ret = gpio_request_by_name(dev, "gpios", 0, &priv->gpio, GPIOD_IS_OUT);
 	if (ret)
 		return ret;
+
+	default_state = dev_read_string(dev, "default-state");
+	if (default_state) {
+		if (!strncmp(default_state, "on", 2))
+			gpio_led_set_state(dev, LEDST_ON);
+		else if (!strncmp(default_state, "off", 3))
+			gpio_led_set_state(dev, LEDST_OFF);
+	}
 
 	return 0;
 }
@@ -108,6 +118,15 @@ static int led_gpio_bind(struct udevice *parent)
 			return ret;
 		uc_plat = dev_get_uclass_plat(dev);
 		uc_plat->label = label;
+
+
+		if (ofnode_read_bool(node, "default-state")) {
+			struct udevice *devp;
+
+			ret = uclass_get_device_tail(dev, 0, &devp);
+			if (ret)
+				return ret;
+		}
 	}
 
 	return 0;

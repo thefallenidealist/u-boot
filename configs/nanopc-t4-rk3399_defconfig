@@ -1,3 +1,4 @@
+#
 CONFIG_ARM=y
 CONFIG_ARCH_ROCKCHIP=y
 CONFIG_SYS_TEXT_BASE=0x00200000
@@ -55,6 +56,12 @@ CONFIG_ERRNO_STR=y
 # -----------------------------------------------------------------------------
 CONFIG_LOCALVERSION="asdf-2021.07-T4-patched-SPI"
 CONFIG_RAM_RK3399_LPDDR4=y
+# don't print:
+# - drivers/ram/rockchip/sdram_common.c
+# - drivers/ram/rockchip/sdram_rk3399.c
+# Channel 0: LPDDR4, 50MHz
+# BW=32 Col=10 Bk=8 CS0 Row=15 CS1 Row=15 CS=2 Die BW=16 Size=2048MB
+# CONFIG_RAM_ROCKCHIP_DEBUG is not set
 
 # SPI flash
 # -----------------------------------------------------------------------------
@@ -73,3 +80,14 @@ CONFIG_SPI_FLASH=y
 CONFIG_SPI_FLASH_GIGADEVICE=y
 CONFIG_SPI_FLASH_WINBOND=y
 CONFIG_SPL_DM_SEQ_ALIAS=y
+
+# misc
+# -----------------------------------------------------------------------------
+CONFIG_PCI_INIT_R=y
+CONFIG_CMD_NVME=y
+CONFIG_CMD_ZFS=y
+CONFIG_OF_LIBFDT_OVERLAY=y
+CONFIG_CMD_GPIO=y
+CONFIG_CMD_I2C=y
+CONFIG_MISC=y
+CONFIG_ROCKCHIP_EFUSE=y

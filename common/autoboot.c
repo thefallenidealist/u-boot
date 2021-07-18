@@ -23,6 +23,8 @@
 #include <linux/delay.h>
 #include <u-boot/sha256.h>
 #include <bootcount.h>
+#include <asm/arch-rockchip/gpio.h>
+#include <dt-bindings/pinctrl/rockchip.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -255,11 +257,32 @@ static int abortboot_key_sequence(int bootdelay)
 	return abort;
 }
 
+#define GPIO1_BASE	0xff730000
+#define LED_ORANGE	RK_PD0
+#define LED_GREEN	RK_PC7
+
+static void leds_on(void)
+{
+	struct rockchip_gpio_regs * const gpio1 = (void *)GPIO1_BASE;
+	int mask = (1UL << LED_GREEN);
+	setbits_le32(&gpio1->swport_dr, mask);
+	setbits_le32(&gpio1->swport_ddr, mask);
+}
+
+static void leds_off(void)
+{
+	struct rockchip_gpio_regs * const gpio1 = (void *)GPIO1_BASE;
+	int mask = 0;
+	setbits_le32(&gpio1->swport_dr, mask);
+	setbits_le32(&gpio1->swport_ddr, mask);
+}
+
 static int abortboot_single_key(int bootdelay)
 {
 	int abort = 0;
 	unsigned long ts;
 
+	leds_on();
 	printf("Hit any key to stop autoboot: %2d ", bootdelay);
 
 	/*
@@ -294,6 +317,7 @@ static int abortboot_single_key(int bootdelay)
 
 	putc('\n');
 
+	leds_off();
 	return abort;
 }
 

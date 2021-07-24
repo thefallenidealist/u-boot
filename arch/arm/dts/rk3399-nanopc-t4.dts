@@ -184,3 +184,15 @@
 				<RK_GPIO1 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
 	};
 };
+
+&i2c2 {
+	// EEPROM with LAN MAC, soldered on SoM module
+	// 24AA025E48T - 2 kB, 16 byte page size, 400 kHz max
+	status = "okay";
+
+	eeprom: eeprom@51 {
+		compatible = "atmel,24c02";
+		reg = <0x51>;
+		pagesize = <16>;
+	};
+};

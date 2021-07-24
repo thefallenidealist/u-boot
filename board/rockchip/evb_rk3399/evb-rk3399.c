@@ -24,6 +24,10 @@
 #define GRF_IO_VSEL_BT565_SHIFT 0
 #define PMUGRF_CON0_VSEL_SHIFT 8
 
+#if !defined(CONFIG_SYS_I2C_EEPROM_MAC_OFFSET)
+#error CONFIG_SYS_I2C_EEPROM_MAC_OFFSET not defined
+#endif
+
 #ifndef CONFIG_SPL_BUILD
 int board_early_init_f(void)
 {

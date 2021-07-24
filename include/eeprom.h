@@ -25,7 +25,8 @@ int eeprom_write(uint dev_addr, uint offset, uchar *buffer, uint cnt);
 # define CONFIG_SYS_DEF_EEPROM_ADDR CONFIG_SYS_I2C_EEPROM_ADDR
 #endif
 
-// hardcoded TODO
-#define CONFIG_SYS_DEF_EEPROM_MAC_OFFSET 0xFA
+#if defined(CONFIG_SYS_I2C_EEPROM_MAC_OFFSET)
+# define CONFIG_SYS_DEF_EEPROM_MAC_OFFSET CONFIG_SYS_I2C_EEPROM_MAC_OFFSET
+#endif
 
 #endif

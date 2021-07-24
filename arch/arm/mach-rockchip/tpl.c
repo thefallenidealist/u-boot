@@ -15,6 +15,7 @@
 #include <asm/io.h>
 #include <asm/arch-rockchip/bootrom.h>
 #include <linux/bitops.h>
+#include "debug.h"
 
 #define TIMER_LOAD_COUNT_L	0x00
 #define TIMER_LOAD_COUNT_H	0x04
@@ -59,7 +60,7 @@ void board_init_f(ulong dummy)
 	 */
 	debug_uart_init();
 #ifdef CONFIG_TPL_BANNER_PRINT
-	printascii("\nU-Boot TPL " PLAIN_VERSION " (" U_BOOT_DATE " - " \
+	printascii(COLOR_ORANGE "\nU-Boot TPL " PLAIN_VERSION COLOR_RESET " (" U_BOOT_DATE " - " \
 				U_BOOT_TIME ")\n");
 #endif
 #endif

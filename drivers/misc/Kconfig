@@ -408,6 +408,13 @@ config SYS_I2C_EEPROM_BUS
 	int "I2C bus of the EEPROM device."
 	default 0
 
+config SYS_I2C_EEPROM_MAC_OFFSET
+	hex "Set the I2C MAC offset"
+	default 0x0
+	depends on DM_I2C
+	help
+	  Set the MAC offset for i2C.
+
 config SYS_EEPROM_SIZE
 	int "Size in bytes of the EEPROM device"
 	default 256

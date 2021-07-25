@@ -448,7 +448,15 @@ int eth_initialize(void)
 				if (num_devices)
 					printf(", ");
 
-				printf("eth%d: %s", dev_seq(dev), dev->name);
+				u8 ethaddr[6];
+				struct eth_pdata *pdata = NULL;
+				pdata = dev_get_plat(dev);
+				if (is_valid_ethaddr(pdata->enetaddr)) {
+					memcpy(ethaddr, pdata->enetaddr, 6);
+				}
+
+				printf("eth%d: %s MAC: %x:%x:%x:%x:%x:%x", dev_seq(dev), dev->name,
+						ethaddr[0], ethaddr[1], ethaddr[2], ethaddr[3], ethaddr[4], ethaddr[5]);
 
 				if (ethprime && dev == prime_dev)
 					printf(" [PRIME]");

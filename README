@@ -1,3 +1,24 @@
+Forked from u-boot 2021.07
+================================================================================
+Playing around with u-boot for SoM-RK3399v2 board
+Used to boot Armbian Linux (with mainline kernel with patches), OpenBSD
+and FreeBSD.
+
+Changes:
+- boot from SPI flash (with reverted changes which break boot)
+- eDP panel support
+- LEDs: Turn on orange LED very early in boot. When u-boot's drivers take over,
+        turn off orange LED. Turn on green LED while autoboot delay is active
+        (to signalize user that time is right for interrupting autoboot).
+- LAN: get MAC from EEPROM chip or generate it from eFuse.
+- prettier banners print - colors print for TPL, SPL and u-boot
+- USB keyboard works in u-boot (in USB3 hub, not in USB2 hub)
+
+For more details look into commit messages in my2021.07 branch
+
+Original README below:
+================================================================================
+
 # SPDX-License-Identifier: GPL-2.0+
 #
 # (C) Copyright 2000 - 2013

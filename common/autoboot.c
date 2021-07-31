@@ -25,10 +25,14 @@
 #include <bootcount.h>
 #include <asm/arch-rockchip/gpio.h>
 #include <dt-bindings/pinctrl/rockchip.h>
+#include <asm-generic/gpio.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
 #define MAX_DELAY_STOP_STR 64
+#define KEY1 33		// GPIO1_A1
+#define KEY2 35		// GPIO1_A3
+#define KEY3 36		// GPIO1_A4
 
 #ifndef DEBUG_BOOTKEYS
 #define DEBUG_BOOTKEYS 0
@@ -283,6 +287,21 @@ static int abortboot_single_key(int bootdelay)
 	unsigned long ts;
 
 	leds_on();
+
+	unsigned int key1 = gpio_get_value(KEY1);
+	unsigned int key2 = gpio_get_value(KEY2);
+	unsigned int key3 = gpio_get_value(KEY3);
+
+	// stop autoboot if KEY1 is pressed
+	if (key1 == 0) {
+		abort = 1;
+	}
+
+	// skip autoboot delay if KEY2 or KEY3 are pressed
+	if ((key2 == 0) || (key3 == 0)) {
+		bootdelay = 0;
+	}
+
 	printf("Hit any key to stop autoboot: %2d ", bootdelay);
 
 	/*
@@ -308,6 +327,11 @@ static int abortboot_single_key(int bootdelay)
 				if (IS_ENABLED(CONFIG_AUTOBOOT_USE_MENUKEY))
 					menukey = key;
 				break;
+			}
+
+			key1 = gpio_get_value(KEY1);
+			if (key1 == 0) {
+				abort = 1;
 			}
 			udelay(10000);
 		} while (!abort && get_timer(ts) < 1000);

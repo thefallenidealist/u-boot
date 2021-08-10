@@ -84,6 +84,28 @@
 			default-state = "off";
 		};
 	};
+
+	keys {
+		compatible = "gpio-keys";
+		autorepeat;
+		pinctrl-names = "default";
+		pinctrl-0 = <&key_pins>;
+
+		key1 {
+			label = "key1";
+			gpios = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
+		};
+
+		key2 {
+			label = "key2";
+			gpios = <&gpio1 RK_PA3 GPIO_ACTIVE_LOW>;
+		};
+
+		key3 {
+			label = "key3";
+			gpios = <&gpio1 RK_PA4 GPIO_ACTIVE_LOW>;
+		};
+	};
 };
 
 &cpu_thermal {
@@ -182,6 +204,13 @@
 			rockchip,pins =
 				<RK_GPIO1 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>,
 				<RK_GPIO1 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
+	};
+
+	key_pins: key_pins {
+		rockchip,pins =
+			<1 RK_PA1 RK_FUNC_GPIO &pcfg_pull_up>,
+			<1 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>,
+			<1 RK_PA4 RK_FUNC_GPIO &pcfg_pull_up>;
 	};
 };
 

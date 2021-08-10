@@ -85,6 +85,12 @@ static int button_gpio_bind(struct udevice *parent)
 			return ret;
 		uc_plat = dev_get_uclass_plat(dev);
 		uc_plat->label = label;
+
+		// detect pull-up/pull-down configuration from dts for gpio-keys
+		struct udevice *devp;
+		ret = uclass_get_device_tail(dev, 0, &devp);
+		if (ret)
+			return ret;
 	}
 
 	return 0;
